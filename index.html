@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Special Gift for Eliza</title>
+    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <text y="0.9em" font-size="90">🎄</text>
+                </svg>'>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&amp;family=Great+Vibes&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #ffd700;
+            --santa-red: #d42426;
+            --soft-glow: rgba(255, 215, 0, 0.3);
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #020111 0%, #101429 100%);
+            font-family: 'Mountains of Christmas', cursive;
+            color: white;
+        }
+
+        #snow-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .workshop-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            width: 320px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .magic-item {
+            font-size: 5.5rem;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+            margin: 25px 0;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+        }
+
+        .magic-item:hover {
+            transform: scale(1.15) rotate(8deg);
+        }
+
+        .btn {
+            background: var(--santa-red);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 30px;
+            font-family: inherit;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(212, 36, 38, 0.3);
+        }
+
+        /* Final Message Layout */
+        #final-section {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 85%;
+            max-width: 600px;
+            z-index: 6;
+        }
+
+        .eliza-msg {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3.5rem, 12vw, 5.5rem);
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+
+
+        .sparkle {
+            color: var(--gold);
+            animation: pulse 2s infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes flyAcross {
+            to {
+                transform: translateX(200vw) translateY(-350px) rotate(-8deg);
+            }
+        }
+
+
+        .sleigh {
+            position: fixed;
+            bottom: 80px;
+            right: -500px;
+            font-size: 4.5rem;
+            z-index: 5;
+            transform: scaleX(1);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .heartwarming-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.4rem;
+            line-height: 1.7;
+            /* color: #f0f0f0; */
+            color: #e0e0e0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            font-weight: 300;
+        }
+
+        /* .heartwarming-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
+            line-height: 1.7;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #e0e0e0;
+        } */
+
+        .sparkle {
+            font-family: 'Mountains of Christmas', cursive;
+            color: var(--gold);
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        /* Base Card - Flexible Width */
+        .workshop-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 2rem;
+            text-align: center;
+            width: 90%;
+            /* Use percentage for responsiveness */
+            max-width: 350px;
+            /* Limits size on desktop */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Adjustments for Mobile Screens */
+        @media (max-width: 480px) {
+            .eliza-msg {
+                font-size: 3rem;
+                /* Smaller font so name doesn't wrap weirdly */
+            }
+
+            .heartwarming-text {
+                font-size: 1.1rem;
+                /* Easier to read on small screens */
+            }
+
+            .magic-item {
+                font-size: 4rem;
+                /* Smaller icons so they don't overflow */
+            }
+
+            .sleigh {
+                font-size: 3rem;
+                /* Smaller sleigh so it fits the mobile sky */
+                bottom: 40px;
+            }
+        }
+
+        /* Prevent horizontal scroll if sleigh goes too far */
+        body {
+            overflow-x: hidden;
+            width: 100vw;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="snow-canvas"></canvas>
+
+    <div class="container">
+        <div class="workshop-card" id="workshop">
+            <div id="step1" class="step active">
+                <h2 style="letter-spacing: 4px;">Hi, Eliza </h2>
+                <p style="letter-spacing: 2px;">A magical box has arrived for you...</p>
+                <div class="magic-item" onclick="nextStep(2)">🎁</div>
+                <p style="font-size: 0.8rem; opacity: 0.6; font-family: sans-serif;">TAP TO OPEN</p>
+            </div>
+
+            <div id="step2" class="step">
+                <h2>The Final Touch</h2>
+                <p style="letter-spacing: 2px;">Place the North Star to guide the way.</p>
+                <div class="magic-item" onclick="nextStep(3)" style="filter: drop-shadow(0 0 20px #fff9c4);">🌟</div>
+            </div>
+
+            <div id="step3" class="step">
+                <h2>Almost There...</h2>
+                <p style="letter-spacing: 2px;">Ready to see your Christmas gift?</p>
+                <button class="btn" onclick="showFinal()">Open 🎁</button>
+            </div>
+        </div>
+
+        <div id="final-section">
+            <h1 class="eliza-msg">Merry Christmas, Eliza ✨</h1>
+            <div class="heartwarming-text">
+                Wishing you a Christmas filled with <span class="sparkle">love, joy, and peaceful moments </span><br>
+                and may the New Year bring your <span class="sparkle">dreams</span> gently to life ✨<br><br>
+                Thank you for being the beautiful soul you are 💖<br>
+                May 2026 be your <span class="sparkle">brightest</span> and <span class="sparkle">happiest</span>
+                chapter yet! 🌟
+            </div>
+            <div style="font-size: 2.5rem; margin-top: 25px; filter: drop-shadow(0 0 18px white);">❄️❤️🎁</div>
+        </div>
+    </div>
+
+    <div id="sleigh" class="sleigh">🦌🦌🛷🎅</div>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.chosic.com/wp-content/uploads/2021/11/Jingle-Bells-Country.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('snow-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+
+        class Snow
+        {
+            constructor()
+            {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.r = Math.random() * 2.5 + 1;
+                this.s = Math.random() * 0.6 + 0.2;
+                this.o = Math.random() * 0.5 + 0.3;
+            }
+            draw()
+            {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.o})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fill();
+            }
+            update() { this.y += this.s; if (this.y > canvas.height) this.y = -10; }
+        }
+        for (let i = 0; i < 150; i++) particles.push(new Snow());
+        function loop() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(loop); }
+        loop();
+
+        const music = document.getElementById('bg-music');
+        let musicStarted = false;
+
+        function nextStep(num)
+        {
+            if (!musicStarted) { music.play().catch(() => { }); musicStarted = true; }
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + num).classList.add('active');
+        }
+
+        function showFinal()
+        {
+            document.getElementById('workshop').style.opacity = "0";
+
+            setTimeout(() =>
+            {
+                document.getElementById('workshop').style.display = "none";
+                const sleigh = document.getElementById('sleigh');
+
+                // Phase 1: Enter from right
+                sleigh.style.transition = "right 1.5s ease-out";
+                sleigh.style.right = "50px";
+
+                setTimeout(() =>
+                {
+                    // Phase 2: Fly across the screen to the left and upward
+                    sleigh.style.transition = "all 4s cubic-bezier(0.65, 0.10, 0.55, 0.95)";
+                    // We use translateX with a positive value because scaleX(-1) inverted the coordinate system
+                    sleigh.style.transform = "scaleX(1) translateX(-250vw) translateY(-550px) rotate(20deg)";
+
+                    setTimeout(() =>
+                    {
+                        const final = document.getElementById('final-section');
+                        final.style.display = "block";
+                        final.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 2500, fill: 'forwards' });
+                    }, 1500);
+                }, 1000);
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>
